@@ -7,26 +7,39 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
+  const isOnSale = !!product.salePrice
+
   return (
-    <div className="border rounded-xl shadow-sm hover:shadow-md transition overflow-hidden bg-white">
-      <Link href={`/products/${product.id}`}>
-        <Image
-          src={product.image.trim()} // ✨ thêm .trim() để tránh lỗi
-          alt={product.name}
-          width={400}
-          height={300}
-          className="w-full h-56 object-cover"
-        />
+    <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-orange-500 transition transform hover:-translate-y-1 duration-300 border-2 border-orange-300 relative">
+      <Link href={`/products/${product.id}`} className="block">
+        <div className="relative w-full h-56">
+          <Image
+            src={product.image.trim()}
+            alt={product.name}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+          {/* 🔥 Badge nếu có sale */}
+          {isOnSale && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-full shadow-md">
+              🔥 Giảm giá
+            </span>
+          )}
+        </div>
         <div className="p-4">
-          <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+          <h3 className="font-extrabold text-lg text-gray-800 mb-2 tracking-tight">
+            {product.name}
+          </h3>
           <div className="flex items-center gap-2">
             {product.salePrice ? (
               <>
-                <span className="text-red-500 font-bold">{product.salePrice.toLocaleString()}₫</span>
+                <span className="text-red-500 font-bold text-lg">{product.salePrice.toLocaleString()}₫</span>
                 <span className="line-through text-sm text-gray-400">{product.price.toLocaleString()}₫</span>
               </>
             ) : (
-              <span className="font-bold text-gray-800">{product.price.toLocaleString()}₫</span>
+              <span className="font-bold text-gray-700 text-lg">{product.price.toLocaleString()}₫</span>
             )}
           </div>
         </div>

@@ -17,10 +17,10 @@ export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 bg-neutral-900 shadow-md">
       <div className="container flex justify-between items-center h-16 px-4">
-        <Link href="/" className="text-xl font-bold">
-          Hot<span className="text-red-500">Wheels</span>
+        <Link href="/" className="text-xl font-bold text-white">
+          Hot<span className="text-yellow-400">Wheels</span>
         </Link>
 
         <nav className="space-x-6 hidden md:flex">
@@ -28,8 +28,8 @@ export default function Navbar() {
             <Link
               key={item.name}
               href={item.href}
-              className={`text-sm font-medium transition hover:text-red-500 ${
-                pathname === item.href ? 'text-red-500' : 'text-gray-700'
+              className={`text-sm font-medium transition hover:text-yellow-400 ${
+                pathname === item.href ? 'text-yellow-400' : 'text-gray-300'
               }`}
             >
               {item.name}
@@ -39,12 +39,12 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <Link href="/profile">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-gray-300 hover:text-yellow-400">
               <User className="w-5 h-5" />
             </Button>
           </Link>
           <Link href="/cart">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-gray-300 hover:text-yellow-400">
               <ShoppingCart className="w-5 h-5" />
             </Button>
           </Link>

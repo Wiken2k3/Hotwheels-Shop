@@ -1,13 +1,13 @@
+// app/layout.tsx
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Fredoka } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
-
-const inter = Inter({ subsets: ['latin'] })
+const fredoka = Fredoka({ subsets: ['latin'], weight: ['400', '600', '700'] })
 
 export const metadata: Metadata = {
   title: 'HotWheels Shop',
@@ -21,9 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className={inter.className}>
+      <body
+        className={`${fredoka.className} bg-neutral-900 text-white min-h-screen flex flex-col`}
+      >
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="flex-grow px-4 md:px-8 lg:px-16">{children}</main>
         <Footer />
         <Toaster position="top-center" />
       </body>
