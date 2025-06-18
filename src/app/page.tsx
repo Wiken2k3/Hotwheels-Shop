@@ -1,3 +1,6 @@
+import Hero from "@/components/Hero";
+import ProductList from "@/components/ProductList";
+
 export default function HomePage() {
   return (
     <section className="py-10 px-4">
@@ -5,6 +8,8 @@ export default function HomePage() {
       <p className="text-center mt-4 text-muted-foreground">
         Cửa hàng mô hình xe Hotwheels chính hãng, giá tốt, giao nhanh.
       </p>
+      <Hero />
+      <ProductList />
     </section>
   )
 }
