@@ -3,19 +3,20 @@ import ProductList from "@/components/ProductList"
 
 export default function HomePage() {
   return (
-    <section className="py-10 px-[20px]">
-      <h1 className="text-4xl font-bold text-center text-white">
-        Chào mừng đến với HotWheels Shop!
-      </h1>
-      <p className="text-center mt-4 pb-10 text-gray-400">
-        Cửa hàng mô hình xe Hotwheels chính hãng, giá tốt, giao nhanh.
-      </p>
-
-      {/* Hero section có thể dùng ảnh /images/carcity.jpg nếu bạn muốn */}
+    <>
+      {/* Hero Section */}
       <Hero />
 
-      {/* Danh sách sản phẩm */}
-      <ProductList />
-    </section>
+      {/* Featured Products Section */}
+      <section className="py-12 px-4 max-w-screen-xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-center text-white mb-6">
+          🔥 Sản phẩm nổi bật
+        </h2>
+        <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto">
+          Khám phá những mẫu xe Hot Wheels được yêu thích nhất – tốc độ, phong cách, và niềm vui không giới hạn!
+        </p>
+        <ProductList />
+      </section>
+    </>
   )
 }

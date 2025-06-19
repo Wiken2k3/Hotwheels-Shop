@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body
-        className={`${fredoka.className} bg-neutral-900 text-white min-h-screen flex flex-col`}
+        className={`${fredoka.className} bg-neutral-950 text-white min-h-screen flex flex-col`}
       >
         <Navbar />
         <main className="flex-grow px-4 md:px-8 lg:px-16">{children}</main>
