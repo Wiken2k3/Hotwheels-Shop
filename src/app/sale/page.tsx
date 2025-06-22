@@ -11,7 +11,7 @@ export default function SalePage() {
     <main className="max-w-screen-xl mx-auto px-4 py-8">
       <div className="mb-6">
         <Image
-          src="/banners/sale-banner.jpg"
+          src="/banners/sale-banner.png"
           alt="Giảm giá Hot Wheels"
           width={1200}
           height={400}
