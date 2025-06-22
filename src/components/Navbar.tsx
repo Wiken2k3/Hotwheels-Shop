@@ -8,11 +8,11 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const navItems = [
-  { name: 'Trang chủ', href: '/' },
-  { name: 'Sản phẩm', href: '/products' },
-  { name: 'Khuyến mãi', href: '/sale' },
-  { name: 'Giới thiệu', href: '/about' },
-  { name: 'Liên hệ', href: '/contact' },
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Sale', href: '/sale' },
+  { name: 'Contact', href: '/contact' },
+  { name: 'About', href: '/about' },
 ]
 
 export default function Navbar() {

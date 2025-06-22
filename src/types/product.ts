@@ -2,7 +2,9 @@ export interface Product {
   id: string
   name: string
   price: number
-  image: string
   salePrice?: number
+  image: string
   description?: string
+  collection?: string
+  onSale?: boolean
 }

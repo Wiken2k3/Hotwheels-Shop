@@ -1,44 +1,23 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAllProducts } from '@/lib/product.service'
-import Image from 'next/image'
-import Link from 'next/link'
-import { toast } from 'react-hot-toast'
-
-interface Product {
-  _id: string
-  title: string
-  image: string
-  price: number
-  salePrice?: number
-  onSale: boolean
-}
+import ProductCard from './ProductCard'
+import { Product } from '@/types/product'
+import { products as staticProducts } from '@/data/products'
 
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getAllProducts()
-        setProducts(data)
-      } catch (err) {
-        toast.error('Không thể lấy danh sách sản phẩm!')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProducts()
+    // Lấy dữ liệu tĩnh luôn
+    setProducts(staticProducts)
   }, [])
 
-  if (loading) {
+  if (products.length === 0) {
     return (
-      <div className="py-20 text-center text-gray-400 text-lg">
-        Đang tải sản phẩm Hot Wheels...
-      </div>
+      <p className="text-gray-500 mt-6 text-center text-lg">
+        Không có sản phẩm nào phù hợp.
+      </p>
     )
   }
 
@@ -52,30 +31,7 @@ export default function ProductList() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10 z-10 relative">
         {products.map((product) => (
-          <Link
-            key={product._id}
-            href={`/products/${product._id}`}
-            className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1"
-          >
-            <Image
-              src={product.image}
-              alt={product.title}
-              width={400}
-              height={300}
-              className="object-cover w-full h-48"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-1 line-clamp-1">{product.title}</h3>
-              {product.onSale ? (
-                <div className="flex items-center gap-2">
-                  <span className="text-red-600 font-bold text-sm">${product.salePrice}</span>
-                  <span className="line-through text-gray-400 text-sm">${product.price}</span>
-                </div>
-              ) : (
-                <span className="text-gray-800 font-bold text-sm">${product.price}</span>
-              )}
-            </div>
-          </Link>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>
