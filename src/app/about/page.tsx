@@ -23,7 +23,7 @@ export default function AboutPage() {
         </div>
         <div>
           <Image
-            src="/about-mission.jpg"
+            src="/banners/about.png"
             alt="Sứ mệnh Hot Wheels"
             width={600}
             height={400}
