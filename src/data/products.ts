@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: '1',
     name: 'Ford Mustang GTD',
     price: 129000,
-    salePrice: 99000,
+    salePrice: 119000,
     image: '/images/Case B 2025/fordmustanggtd.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case B 2025',
@@ -14,7 +14,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'Lamborghini Huracán',
-    price: 110000,
+    price: 120000,
     image: '/images/Case B 2025/lamborghinihuracan.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case B 2025',
@@ -65,7 +65,7 @@ export const products: Product[] = [
     id: '8',
     name: 'CUPRA e-RACER',
     price: 129000,
-    salePrice: 99000,
+    salePrice: 89000,
     image: '/images/Case C 2025/cupra.png',
     description: 'Mẫu xe Case C 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
@@ -74,7 +74,7 @@ export const products: Product[] = [
   {
     id: '9',
     name: 'Oracle Red Bull Racing Formula 1',
-    price: 110000,
+    price: 160000,
     image: '/images/Case C 2025/f1redbull.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
@@ -92,7 +92,7 @@ export const products: Product[] = [
   {
     id: '11',
     name: '2020 Ford Mustang Shelby GT500 ',
-    price: 79000,
+    price: 109000,
     image: '/images/Case C 2025/mustangshelby.png',
     description: 'Mẫu xe Case C 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
@@ -100,7 +100,7 @@ export const products: Product[] = [
   {
     id: '12',
     name: 'Porsche 911 GT3',
-    price: 89000,
+    price: 169000,
     image: '/images/Case C 2025/potden.png',
     description: 'Mẫu xe Case C 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',

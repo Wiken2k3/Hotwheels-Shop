@@ -4,102 +4,114 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { Heart } from 'lucide-react'
+import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/types/product'
+import { Button } from '@/components/ui/button'
+import { useCart } from '@/store/cart-store'
 
 interface Props {
   product: Product
 }
 
 export default function ProductCard({ product }: Props) {
-  const isOnSale = typeof product.salePrice === 'number' && product.salePrice < product.price
   const [liked, setLiked] = useState(false)
+  const { addToCart } = useCart()
+  const isOnSale = typeof product.salePrice === 'number' && product.salePrice < product.price
 
   useEffect(() => {
-    const storedLikes = JSON.parse(localStorage.getItem('wishlist') || '[]')
-    setLiked(storedLikes.includes(product.id))
+    const likes = JSON.parse(localStorage.getItem('wishlist') || '[]') as string[]
+    setLiked(likes.includes(product.id))
   }, [product.id])
 
-  const toggleLike = () => {
-    const storedLikes: string[] = JSON.parse(localStorage.getItem('wishlist') || '[]')
-    let updatedLikes: string[]
-
-    if (storedLikes.includes(product.id)) {
-      updatedLikes = storedLikes.filter(id => id !== product.id)
-      toast.error(`💔 Đã xoá khỏi yêu thích: ${product.name}`)
-    } else {
-      updatedLikes = [...storedLikes, product.id]
-      toast.success(`❤️ Đã thêm vào yêu thích: ${product.name}`)
-    }
-
-    localStorage.setItem('wishlist', JSON.stringify(updatedLikes))
+  const toggleLike = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const likes = JSON.parse(localStorage.getItem('wishlist') || '[]') as string[]
+    const updated = liked ? likes.filter(id => id !== product.id) : [...likes, product.id]
+    localStorage.setItem('wishlist', JSON.stringify(updated))
     setLiked(!liked)
+    liked
+      ? toast.error(`💔 Đã xoá khỏi yêu thích: ${product.name}`)
+      : toast.success(`❤️ Đã thêm vào yêu thích: ${product.name}`)
+  }
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    addToCart(product)
+    toast.success(`🛒 Đã thêm vào giỏ: ${product.name}`)
   }
 
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-yellow-400/50 border border-yellow-100 transition-all duration-300 hover:-translate-y-1">
-      <Link href={`/products/${product.id}`} className="block">
-        {/* Ảnh sản phẩm */}
-        <div className="relative w-full h-56 overflow-hidden">
-          <Image
-            src={product.image.trim()}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
+    <div className="group relative rounded-3xl overflow-hidden bg-white border border-yellow-100 shadow-md hover:shadow-yellow-300 transition-all duration-300">
+      {/* Image section */}
+      <Link href={`/products/${product.id}`} className="block relative h-56 sm:h-64 overflow-hidden">
+        <Image
+          src={product.image.trim()}
+          alt={product.name}
+          fill
+          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
 
-          {/* Lớp phủ gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 pointer-events-none" />
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" />
 
-          {/* Badge giảm giá */}
-          {isOnSale && (
-            <div className="absolute top-2 left-2 z-20 bg-gradient-to-r from-red-600 to-yellow-400 text-white text-xs font-bold py-1 px-2 rounded-full shadow-md">
-              🔥 Giảm giá
-            </div>
-          )}
-
-          {/* Nút yêu thích */}
-          <div className="absolute top-2 right-2 z-20">
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                toggleLike()
-              }}
-              className={`p-1 rounded-full shadow-md transition-all bg-white/80 hover:bg-white ${
-                liked ? 'text-red-500 scale-110' : 'text-gray-400 hover:scale-105'
-              }`}
-              aria-label={liked ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
-            >
-              <Heart className="w-4 h-4 fill-current" fill={liked ? 'currentColor' : 'none'} />
-            </button>
+        {/* Sale badge */}
+        {isOnSale && (
+          <div className="absolute top-2 left-2 z-20 bg-red-600 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg animate-pulse">
+            🔥 Giảm giá
           </div>
-        </div>
+        )}
 
-        {/* Nội dung */}
-        <div className="p-4 relative z-20">
-          <h3 className="font-bold text-lg text-gray-900 group-hover:text-yellow-500 transition line-clamp-1">
+        {/* Like button */}
+        <button
+          onClick={toggleLike}
+          className={`absolute top-2 right-2 z-20 p-2 rounded-full backdrop-blur-sm bg-white/80 hover:bg-white transition-all shadow-md ${
+            liked ? 'text-red-500 scale-110' : 'text-gray-400 hover:scale-105'
+          }`}
+          aria-label={liked ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
+        >
+          <Heart className="w-5 h-5 fill-current" fill={liked ? 'currentColor' : 'none'} />
+        </button>
+      </Link>
+
+      {/* Content section */}
+      <div className="p-4 sm:p-5 space-y-3">
+        {/* Name */}
+        <Link href={`/products/${product.id}`}>
+          <h3 className="text-lg font-semibold text-gray-800 group-hover:text-yellow-600 transition line-clamp-1">
             {product.name}
           </h3>
+        </Link>
 
-          <div className="flex items-center gap-2 mt-1">
-            {isOnSale ? (
-              <>
-                <span className="text-red-600 font-bold text-sm">
-                  {product.salePrice?.toLocaleString('vi-VN')}₫
-                </span>
-                <span className="line-through text-gray-400 text-sm">
-                  {product.price.toLocaleString('vi-VN')}₫
-                </span>
-              </>
-            ) : (
-              <span className="text-gray-800 font-bold text-sm">
+        {/* Price */}
+        <div className="flex items-center gap-2">
+          {isOnSale ? (
+            <>
+              <span className="text-red-600 font-bold text-sm sm:text-base">
+                {product.salePrice?.toLocaleString('vi-VN')}₫
+              </span>
+              <span className="line-through text-gray-400 text-sm">
                 {product.price.toLocaleString('vi-VN')}₫
               </span>
-            )}
-          </div>
+            </>
+          ) : (
+            <span className="text-gray-800 font-bold text-sm sm:text-base">
+              {product.price.toLocaleString('vi-VN')}₫
+            </span>
+          )}
         </div>
-      </Link>
+
+        {/* Action button */}
+        <Button
+          onClick={handleAddToCart}
+          size="sm"
+          className="w-full flex items-center justify-center gap-2 bg-yellow-500 text-black font-medium hover:bg-yellow-600 transition hover:scale-105 shadow-md rounded-xl"
+          aria-label={`Thêm ${product.name} vào giỏ hàng`}
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Thêm vào giỏ
+        </Button>
+      </div>
     </div>
   )
 }

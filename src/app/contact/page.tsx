@@ -1,4 +1,3 @@
-// app/contact/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -25,42 +24,64 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-16">
-      <h1 className="text-4xl font-extrabold text-center text-orange-500 mb-8">Liên hệ với chúng tôi</h1>
+    <main className="max-w-3xl mx-auto px-6 py-24">
+      <h1 className="text-5xl font-extrabold text-center text-[#D35400] mb-12 drop-shadow-sm">
+        Liên hệ với chúng tôi
+      </h1>
+
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-xl space-y-6 border border-orange-100"
+        className="bg-white p-8 rounded-3xl shadow-2xl border border-[#FDEBD0] space-y-8"
+        noValidate
       >
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-2" htmlFor="name">
+            Họ và tên
+          </label>
           <Input
+            id="name"
             placeholder="Nhập tên của bạn"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="border-gray-300 focus:ring-[#E67E22] focus:border-[#E67E22]"
+            required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-2" htmlFor="email">
+            Email
+          </label>
           <Input
+            id="email"
             type="email"
             placeholder="email@domain.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="border-gray-300 focus:ring-[#E67E22] focus:border-[#E67E22]"
+            required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nội dung</label>
+          <label className="block text-sm font-semibold text-gray-800 mb-2" htmlFor="message">
+            Nội dung
+          </label>
           <Textarea
-            rows={5}
+            id="message"
+            rows={6}
             placeholder="Lời nhắn, góp ý hoặc yêu cầu hỗ trợ..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            className="border-gray-300 focus:ring-[#E67E22] focus:border-[#E67E22]"
+            required
           />
         </div>
 
-        <Button type="submit" className="w-full bg-orange-500 text-white hover:bg-orange-600">
+        <Button
+          type="submit"
+          className="w-full bg-[#E67E22] text-white font-semibold rounded-full shadow-lg hover:bg-[#D35400] transition-colors duration-300"
+        >
           Gửi liên hệ
         </Button>
       </form>
