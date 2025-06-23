@@ -8,7 +8,14 @@ import { Trash2, Plus, Minus } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 export default function CartPage() {
-  const { items, removeFromCart, totalPrice, clearCart, increaseQuantity, decreaseQuantity } = useCart()
+  const {
+    items,
+    removeFromCart,
+    totalPrice,
+    clearCart,
+    increaseQuantity,
+    decreaseQuantity,
+  } = useCart()
 
   const handleIncrease = (id: string, currentQty: number) => {
     if (currentQty >= 10) {
@@ -16,6 +23,14 @@ export default function CartPage() {
       return
     }
     increaseQuantity(id)
+  }
+
+  const handleCheckout = () => {
+    if (items.length === 0) return
+    // Gửi dữ liệu lên server nếu cần ở đây
+
+    toast.success('Đặt hàng thành công! 🎉')
+    clearCart()
   }
 
   if (items.length === 0) {
@@ -36,12 +51,12 @@ export default function CartPage() {
       <h1 className="text-4xl font-extrabold mb-8 text-yellow-400 drop-shadow-lg">
         Giỏ hàng của bạn
       </h1>
+
       <div className="space-y-6">
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col md:flex-row items-center md:items-start gap-4 p-6 rounded-xl border border-gray-600 bg-neutral-900
-              hover:bg-neutral-800 transition-colors shadow-md"
+            className="flex flex-col md:flex-row items-center md:items-start gap-4 p-6 rounded-xl border border-gray-600 bg-neutral-900 hover:bg-neutral-800 transition-colors shadow-md"
           >
             <Image
               src={item.image}
@@ -52,11 +67,9 @@ export default function CartPage() {
               priority
             />
             <div className="flex-1 min-w-0">
-              {/* Link về trang chi tiết sản phẩm */}
               <Link
                 href={`/products/${item.id}`}
                 className="font-semibold text-xl text-white truncate hover:text-yellow-400 transition-colors"
-                aria-label={`Xem chi tiết sản phẩm ${item.name}`}
               >
                 {item.name}
               </Link>
@@ -67,17 +80,17 @@ export default function CartPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => decreaseQuantity(item.id)}
-                    aria-label={`Giảm số lượng ${item.name}`}
                     className="p-1"
                   >
                     <Minus className="w-4 h-4 text-gray-300" />
                   </Button>
-                  <span className="text-white font-semibold min-w-[24px] text-center">{item.quantity}</span>
+                  <span className="text-white font-semibold min-w-[24px] text-center">
+                    {item.quantity}
+                  </span>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleIncrease(item.id, item.quantity)}
-                    aria-label={`Tăng số lượng ${item.name}`}
                     className="p-1"
                   >
                     <Plus className="w-4 h-4 text-gray-300" />
@@ -91,10 +104,8 @@ export default function CartPage() {
             <Button
               variant="destructive"
               size="sm"
-              className="flex items-center gap-2 text-sm font-semibold
-                hover:bg-red-600 focus:bg-red-600"
               onClick={() => removeFromCart(item.id)}
-              aria-label={`Xóa ${item.name} khỏi giỏ hàng`}
+              className="flex items-center gap-2 text-sm font-semibold hover:bg-red-600 focus:bg-red-600 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Xóa
@@ -103,19 +114,29 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="mt-12 flex flex-col md:flex-row justify-between items-center border-t border-gray-700 pt-6 gap-4">
+      {/* Footer */}
+      <div className="mt-12 flex flex-col md:flex-row justify-between items-center border-t border-gray-700 pt-6 gap-6">
         <p className="text-2xl font-extrabold text-yellow-400 drop-shadow-lg">
           Tổng tiền: <span className="text-white">{totalPrice().toLocaleString()}₫</span>
         </p>
-        <Button
-          variant="destructive"
-          size="lg"
-          onClick={clearCart}
-          className="uppercase tracking-wide shadow-md hover:bg-red-600 focus:bg-red-600"
-          aria-label="Xóa tất cả sản phẩm trong giỏ hàng"
-        >
-          Xóa tất cả
-        </Button>
+        <div className="flex gap-6">
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={handleCheckout}
+            className="uppercase tracking-wide font-bold shadow-lg bg-yellow-400 text-black hover:bg-yellow-500 focus:bg-yellow-500 active:scale-95 transition-transform"
+          >
+            Đặt hàng
+          </Button>
+          <Button
+            variant="destructive"
+            size="lg"
+            onClick={clearCart}
+            className="uppercase tracking-wide font-bold shadow-lg bg-red-600 hover:bg-red-700 focus:bg-red-700 active:scale-95 transition-transform"
+          >
+            Xóa tất cả
+          </Button>
+        </div>
       </div>
     </div>
   )

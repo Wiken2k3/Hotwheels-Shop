@@ -7,4 +7,5 @@ export interface Product {
   description?: string
   collection?: string
   onSale?: boolean
+  liked?: boolean
 }

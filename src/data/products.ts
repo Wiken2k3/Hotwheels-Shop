@@ -10,6 +10,7 @@ export const products: Product[] = [
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case B 2025',
     onSale: true,
+    liked: true,
   },
   {
     id: '2',
@@ -18,6 +19,7 @@ export const products: Product[] = [
     image: '/images/Case B 2025/lamborghinihuracan.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case B 2025',
+    liked: true,
   },
   {
     id: '3',
@@ -44,6 +46,7 @@ export const products: Product[] = [
     image: '/images/Case B 2025/subaru.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case B 2025',
+    liked: true,
   },
   {
     id: '6',
@@ -78,6 +81,7 @@ export const products: Product[] = [
     image: '/images/Case C 2025/f1redbull.png',
     description: 'Mẫu xe Case B 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
+    liked: true,
   },
   {
     id: '10',
@@ -96,6 +100,7 @@ export const products: Product[] = [
     image: '/images/Case C 2025/mustangshelby.png',
     description: 'Mẫu xe Case C 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
+    liked: true,
   },
   {
     id: '12',
@@ -104,6 +109,7 @@ export const products: Product[] = [
     image: '/images/Case C 2025/potden.png',
     description: 'Mẫu xe Case C 2025 VW Beetle mang phong cách retro.',
     collection: 'Case C 2025',
+    liked: true,
   },
   {
     id: '13',

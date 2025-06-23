@@ -4,7 +4,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'ghost' | 'destructive' | 'outline'  // thêm outline
+  variant?: 'default' | 'ghost' | 'destructive' | 'outline'  | 'secondary' | 'primary' // thêm outline
   size?: 'default' | 'icon' | 'sm' | 'lg'
 }
 

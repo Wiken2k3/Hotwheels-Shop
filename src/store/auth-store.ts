@@ -1,11 +1,12 @@
+// store/auth-store.ts
 import { create } from 'zustand'
 
-interface User {
+type User = {
   name: string
   email: string
 }
 
-interface AuthState {
+type AuthState = {
   user: User | null
   login: (user: User) => void
   logout: () => void
