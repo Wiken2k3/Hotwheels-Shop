@@ -4,10 +4,11 @@ import { useEffect } from 'react'
 import { useAuth } from '@/store/auth-store'
 import { useCart } from '@/store/cart-store'
 import { useOrder } from '@/store/orders-store'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { toast } from 'react-hot-toast'
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
@@ -15,36 +16,35 @@ export default function ProfilePage() {
   const { orders, placeOrder } = useOrder()
   const router = useRouter()
 
-  // Redirect nếu chưa đăng nhập, dùng useEffect tránh lỗi
+  // Redirect nếu chưa đăng nhập
   useEffect(() => {
     if (!user) {
       router.push('/login')
     }
   }, [user, router])
 
-  // Nếu chưa có user thì không render nội dung (đợi redirect)
   if (!user) return null
 
-  // Hàm xử lý đặt hàng
+  // Xử lý đặt hàng (nếu vẫn giữ flow đặt hàng từ profile)
   const handlePlaceOrder = () => {
     if (cart.items.length === 0) {
-      alert('Giỏ hàng đang trống')
+      toast.error('Giỏ hàng đang trống!')
       return
     }
-
     placeOrder(cart.items, cart.totalPrice())
     cart.clearCart()
-    router.push('/orders') // Chuyển sang trang lịch sử đơn hàng hoặc trang phù hợp
+    toast.success('Đặt hàng thành công!')
+    router.push('/orders')
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-12 px-4 space-y-10">
-      {/* Thông tin người dùng */}
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-2">👋 Xin chào, {user.name}!</h1>
-        <p className="text-gray-500">Email: {user.email}</p>
+    <div className="max-w-4xl mx-auto py-12 px-4 space-y-12">
+      {/* ✅ Thông tin người dùng */}
+      <section className="text-center space-y-3">
+        <h1 className="text-2xl font-bold">👋 Xin chào, {user.name}!</h1>
+        <p className="text-gray-400">Email: {user.email}</p>
         <Button
-          className="mt-4"
+          variant="destructive"
           onClick={() => {
             logout()
             router.push('/')
@@ -52,87 +52,73 @@ export default function ProfilePage() {
         >
           Đăng xuất
         </Button>
-      </div>
+      </section>
 
-      {/* Giỏ hàng */}
-      <div className="bg-neutral-900 p-6 rounded-xl shadow">
-        <h2 className="text-xl font-semibold text-yellow-400 mb-4">🛒 Giỏ hàng của bạn</h2>
+      {/* ✅ Giỏ hàng */}
+      <section className="bg-neutral-900 p-6 rounded-xl shadow space-y-4">
+        <h2 className="text-xl font-semibold text-yellow-400">🛒 Giỏ hàng của bạn</h2>
         {cart.items.length === 0 ? (
-          <p className="text-gray-400">Chưa có sản phẩm nào trong giỏ hàng.</p>
+          <p className="text-gray-400 italic">Chưa có sản phẩm nào trong giỏ hàng.</p>
         ) : (
           <>
             <ul className="space-y-4">
               {cart.items.map((item) => (
                 <li
                   key={item.id}
-                  className="flex justify-between items-center border-b border-gray-700 pb-2"
+                  className="flex items-center gap-4 border-b border-gray-700 pb-4"
                 >
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={64}
+                    height={40}
+                    className="rounded object-cover"
+                  />
                   <Link
                     href={`/products/${item.id}`}
-                    className="flex items-center gap-4 flex-1 hover:underline"
+                    className="flex-1 font-medium text-white hover:underline"
                   >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={64}
-                      height={40}
-                      className="rounded object-cover"
-                    />
-                    <div>
-                      <p className="font-medium text-white">{item.name}</p>
-                      <p className="text-sm text-gray-400">
-                        {(item.salePrice ?? item.price).toLocaleString()}₫
-                      </p>
-                    </div>
+                    {item.name}
+                    <span className="block text-sm text-gray-400">
+                      {(item.salePrice ?? item.price).toLocaleString()}₫ x {item.quantity}
+                    </span>
                   </Link>
                   <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => cart.decreaseQuantity(item.id)}
-                    >
-                      -
-                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => cart.decreaseQuantity(item.id)}>-</Button>
                     <span className="text-white min-w-[24px] text-center">{item.quantity}</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => cart.increaseQuantity(item.id)}
-                    >
-                      +
-                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => cart.increaseQuantity(item.id)}>+</Button>
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => cart.removeFromCart(item.id)}
                       className="text-red-400"
+                      onClick={() => cart.removeFromCart(item.id)}
                     >
                       X
                     </Button>
                   </div>
                 </li>
               ))}
-              <li className="text-right font-bold mt-4 text-yellow-400">
+              <li className="text-right text-yellow-400 font-bold mt-4">
                 Tổng cộng: {cart.totalPrice().toLocaleString()}₫
               </li>
             </ul>
 
-            {/* Nút đặt hàng */}
-            <div className="mt-4 text-right">
+            {/* ✅ Nút chuyển đến thanh toán */}
+            <div className="text-right mt-4">
               <Button
-                onClick={handlePlaceOrder}
-                className="bg-yellow-400 text-black hover:bg-yellow-500"
+                onClick={() => router.push('/checkout')}
+                className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
               >
-                Đặt hàng
+                Thanh toán ngay
               </Button>
             </div>
           </>
         )}
-      </div>
+      </section>
 
-      {/* Đơn hàng */}
-      <div className="bg-neutral-900 p-6 rounded-xl shadow">
-        <h2 className="text-xl font-semibold text-yellow-400 mb-4">📦 Lịch sử đơn hàng</h2>
+      {/* ✅ Lịch sử đơn hàng */}
+      <section className="bg-neutral-900 p-6 rounded-xl shadow space-y-4">
+        <h2 className="text-xl font-semibold text-yellow-400">📦 Lịch sử đơn hàng</h2>
         {orders.length === 0 ? (
           <p className="text-gray-400 italic">Bạn chưa có đơn hàng nào.</p>
         ) : (
@@ -140,8 +126,8 @@ export default function ProfilePage() {
             {orders.map((order) => (
               <li
                 key={order.id}
-                className="flex items-center gap-4 border-b border-gray-700 pb-4 cursor-pointer hover:bg-neutral-800 rounded"
-                onClick={() => router.push(`/orders/${order.id}`)} // chuyển sang trang chi tiết đơn hàng
+                onClick={() => router.push(`/orders/${order.id}`)}
+                className="flex items-center gap-4 border-b border-gray-700 pb-4 cursor-pointer hover:bg-neutral-800 p-2 rounded"
               >
                 {order.items[0] && (
                   <Image
@@ -163,7 +149,7 @@ export default function ProfilePage() {
             ))}
           </ul>
         )}
-      </div>
+      </section>
     </div>
   )
 }

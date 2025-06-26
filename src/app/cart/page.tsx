@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from '@/store/cart-store'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -8,6 +9,7 @@ import { Trash2, Plus, Minus } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 export default function CartPage() {
+  const router = useRouter()
   const {
     items,
     removeFromCart,
@@ -19,29 +21,43 @@ export default function CartPage() {
 
   const handleIncrease = (id: string, currentQty: number) => {
     if (currentQty >= 10) {
-      toast.error('Bạn đã đạt số lượng tối đa cho sản phẩm này')
+      toast.error('Bạn đã đạt số lượng tối đa (10)')
       return
     }
     increaseQuantity(id)
   }
 
-  const handleCheckout = () => {
-    if (items.length === 0) return
-    // Gửi dữ liệu lên server nếu cần ở đây
+  const handleDecrease = (id: string, currentQty: number) => {
+    if (currentQty <= 1) {
+      toast.error('Số lượng tối thiểu là 1')
+      return
+    }
+    decreaseQuantity(id)
+  }
 
-    toast.success('Đặt hàng thành công! 🎉')
-    clearCart()
+  const handleCheckoutRedirect = () => {
+    if (items.length === 0) {
+      toast.error('Giỏ hàng của bạn đang trống!')
+      return
+    }
+    router.push('/checkout')
   }
 
   if (items.length === 0) {
     return (
-      <div className="max-w-screen-md mx-auto py-32 text-center px-4 md:px-8 lg:px-16">
+      <div className="max-w-screen-md mx-auto py-32 text-center px-4 md:px-8">
         <h1 className="text-3xl font-extrabold mb-4 text-yellow-400 drop-shadow-lg">
-          Giỏ hàng của bạn đang trống!
+          Giỏ hàng trống!
         </h1>
         <p className="text-gray-300 text-lg">
-          Hãy thêm những mẫu xe Hot Wheels yêu thích để bắt đầu cuộc vui nhé!
+          Thêm vài mẫu xe Hot Wheels để bắt đầu sưu tập nhé!
         </p>
+        <Button
+          className="mt-6 bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
+          onClick={() => router.push('/products')}
+        >
+          Mua sắm ngay
+        </Button>
       </div>
     )
   }
@@ -79,7 +95,7 @@ export default function CartPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => decreaseQuantity(item.id)}
+                    onClick={() => handleDecrease(item.id, item.quantity)}
                     className="p-1"
                   >
                     <Minus className="w-4 h-4 text-gray-300" />
@@ -114,19 +130,18 @@ export default function CartPage() {
         ))}
       </div>
 
-      {/* Footer */}
+      {/* Footer tổng tiền + thanh toán */}
       <div className="mt-12 flex flex-col md:flex-row justify-between items-center border-t border-gray-700 pt-6 gap-6">
         <p className="text-2xl font-extrabold text-yellow-400 drop-shadow-lg">
           Tổng tiền: <span className="text-white">{totalPrice().toLocaleString()}₫</span>
         </p>
         <div className="flex gap-6">
           <Button
-            variant="primary"
             size="lg"
-            onClick={handleCheckout}
+            onClick={handleCheckoutRedirect}
             className="uppercase tracking-wide font-bold shadow-lg bg-yellow-400 text-black hover:bg-yellow-500 focus:bg-yellow-500 active:scale-95 transition-transform"
           >
-            Đặt hàng
+            Thanh toán
           </Button>
           <Button
             variant="destructive"
