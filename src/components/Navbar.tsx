@@ -8,11 +8,11 @@ import { ShoppingCart, User } from 'lucide-react'
 import { Button } from './ui/button'
 
 const navItems = [
-  { name: 'Trang chủ', href: '/' },
-  { name: 'Sản phẩm', href: '/products' },
-  { name: 'Khuyến mãi', href: '/sale' },
-  { name: 'Giới thiệu', href: '/about' },
-  { name: 'Liên hệ', href: '/contact' },
+  { name: 'TRANG CHỦ', href: '/' },
+  { name: 'SẢN PHẨM', href: '/products' },
+  { name: 'KHUYẾN MÃI', href: '/sale' },
+  { name: 'GIỚI THIỆU', href: '/about' },
+  { name: 'LIÊN HỆ', href: '/contact' },
 ]
 
 export default function Navbar() {

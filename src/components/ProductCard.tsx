@@ -8,6 +8,7 @@ import { Heart, ShoppingCart } from 'lucide-react'
 import { Product } from '@/types/product'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/store/cart-store'
+import { getWishlist, toggleWishlist } from '@/lib/wishlist'
 
 interface Props {
   product: Product
@@ -18,20 +19,21 @@ export default function ProductCard({ product }: Props) {
   const { addToCart } = useCart()
   const isOnSale = typeof product.salePrice === 'number' && product.salePrice < product.price
 
+  // Cập nhật liked khi component mount hoặc khi product.id thay đổi
   useEffect(() => {
-    const likes = JSON.parse(localStorage.getItem('wishlist') || '[]') as string[]
-    setLiked(likes.includes(product.id))
+    setLiked(getWishlist().includes(product.id))
   }, [product.id])
 
-  const toggleLike = (e: React.MouseEvent) => {
+  const handleToggleLike = (e: React.MouseEvent) => {
     e.preventDefault()
-    const likes = JSON.parse(localStorage.getItem('wishlist') || '[]') as string[]
-    const updated = liked ? likes.filter(id => id !== product.id) : [...likes, product.id]
-    localStorage.setItem('wishlist', JSON.stringify(updated))
-    setLiked(!liked)
-    liked
-      ? toast.error(`💔 Đã xoá khỏi yêu thích: ${product.name}`)
-      : toast.success(`❤️ Đã thêm vào yêu thích: ${product.name}`)
+    const updated = toggleWishlist(product.id)
+    const isNowLiked = updated.includes(product.id)
+    setLiked(isNowLiked)
+    toast.success(
+      isNowLiked
+        ? `❤️ Đã thêm vào yêu thích: ${product.name}`
+        : `💔 Đã xoá khỏi yêu thích: ${product.name}`
+    )
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -64,7 +66,7 @@ export default function ProductCard({ product }: Props) {
 
         {/* Like button */}
         <button
-          onClick={toggleLike}
+          onClick={handleToggleLike}
           className={`absolute top-2 right-2 z-20 p-2 rounded-full backdrop-blur-sm bg-white/80 hover:bg-white transition-all shadow-md ${
             liked ? 'text-red-500 scale-110' : 'text-gray-400 hover:scale-105'
           }`}
