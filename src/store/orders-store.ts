@@ -1,3 +1,4 @@
+// src/store/order-store.ts
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Product } from '@/types/product'
@@ -37,9 +38,8 @@ export const useOrder = create<OrderState>()(
       clearOrders: () => set({ orders: [] }),
     }),
     {
-      name: 'orders-storage', // key lưu trên localStorage
-      partialize: (state) => ({ orders: state.orders }), // chỉ lưu phần orders thôi
-      // serialize và deserialize mặc định đủ dùng với dữ liệu này
+      name: 'orders-storage',
+      partialize: (state) => ({ orders: state.orders }),
     }
   )
 )

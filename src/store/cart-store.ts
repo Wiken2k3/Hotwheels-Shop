@@ -1,3 +1,4 @@
+// src/store/cart-store.ts
 import { create } from 'zustand'
 import { Product } from '@/types/product'
 
@@ -59,14 +60,13 @@ export const useCart = create<CartState>((set, get) => ({
     const item = get().items.find((i) => i.id === id)
     if (!item) return
     if (item.quantity <= 1) {
-      // Xóa khi giảm xuống dưới 1
       set({
         items: get().items.filter((i) => i.id !== id),
       })
     } else {
       set({
         items: get().items.map((i) =>
-          i.id === id ? { ...i, quantity: i.quantity - 1 } : i
+          i.id === id ? { ...i, quantity: item.quantity - 1 } : i
         ),
       })
     }

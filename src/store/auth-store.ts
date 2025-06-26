@@ -1,4 +1,4 @@
-// store/auth-store.ts
+// src/store/auth-store.ts
 import { create } from 'zustand'
 
 type User = {

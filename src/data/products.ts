@@ -300,7 +300,7 @@ export const products: Product[] = [
     name: 'Porsche 904 Carrera GTS',
     price: 109000,
     salePrice: 89000,
-    image: '/images/Case D 2025/Porshe904.jpg',
+    image: '/images/Case D 2025/Porshe904.png',
     description: 'Mẫu xe đua cổ điển từ những năm 60 với thiết kế khí động học. Porsche 904 là hiện thân của vẻ đẹp thuần túy',
     collection: 'Case D 2025',
     onSale: true,
