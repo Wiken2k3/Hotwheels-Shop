@@ -6,9 +6,8 @@ type Params = {
   id: string
 }
 
-export default async function ProductDetailPage({ params }: { params: Params | Promise<Params> }) {
-  const resolvedParams = await params
-  const product = products.find((p) => p.id === resolvedParams.id)
+export default async function ProductDetailPage({ params }: { params: Params }) {
+  const product = products.find((p) => p.id === params.id)
 
   if (!product) return notFound()
 
