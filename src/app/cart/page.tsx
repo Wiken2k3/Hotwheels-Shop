@@ -19,24 +19,24 @@ export default function CartPage() {
     decreaseQuantity,
   } = useCart()
 
-  const handleIncrease = (id: string, currentQty: number) => {
-    if (currentQty >= 10) {
+  const handleIncrease = (id: string, qty: number) => {
+    if (qty >= 10) {
       toast.error('Bạn đã đạt số lượng tối đa (10)')
       return
     }
     increaseQuantity(id)
   }
 
-  const handleDecrease = (id: string, currentQty: number) => {
-    if (currentQty <= 1) {
+  const handleDecrease = (id: string, qty: number) => {
+    if (qty <= 1) {
       toast.error('Số lượng tối thiểu là 1')
       return
     }
     decreaseQuantity(id)
   }
 
-  const handleCheckoutRedirect = () => {
-    if (items.length === 0) {
+  const handleCheckout = () => {
+    if (!items.length) {
       toast.error('Giỏ hàng của bạn đang trống!')
       return
     }
@@ -49,9 +49,7 @@ export default function CartPage() {
         <h1 className="text-3xl font-extrabold mb-4 text-yellow-400 drop-shadow-lg">
           Giỏ hàng trống!
         </h1>
-        <p className="text-gray-300 text-lg">
-          Thêm vài mẫu xe Hot Wheels để bắt đầu sưu tập nhé!
-        </p>
+        <p className="text-gray-300 text-lg">Thêm vài mẫu Hot Wheels để bắt đầu sưu tập nhé!</p>
         <Button
           className="mt-6 bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
           onClick={() => router.push('/products')}
@@ -64,7 +62,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8 lg:px-16 py-12">
-      <h1 className="text-4xl font-extrabold mb-8 text-yellow-400 drop-shadow-lg">
+      <h1 className="text-3xl sm:text-4xl font-extrabold mb-8 text-yellow-400 drop-shadow-lg">
         Giỏ hàng của bạn
       </h1>
 
@@ -72,7 +70,7 @@ export default function CartPage() {
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col md:flex-row items-center md:items-start gap-4 p-6 rounded-xl border border-gray-600 bg-neutral-900 hover:bg-neutral-800 transition-colors shadow-md"
+            className="flex flex-col sm:flex-row items-center gap-4 p-6 rounded-xl border border-gray-700 bg-neutral-900 hover:bg-neutral-800 transition"
           >
             <Image
               src={item.image}
@@ -82,72 +80,77 @@ export default function CartPage() {
               className="rounded-lg object-cover shadow-sm"
               priority
             />
-            <div className="flex-1 min-w-0">
-              <Link
-                href={`/products/${item.id}`}
-                className="font-semibold text-xl text-white truncate hover:text-yellow-400 transition-colors"
-              >
-                {item.name}
-              </Link>
-              <p className="text-gray-400 font-medium mt-2">
-                Số lượng:
-                <span className="inline-flex items-center ml-3 gap-2">
+
+            <div className="flex-1 w-full">
+              <div className="flex justify-between flex-wrap items-center gap-3">
+                <Link
+                  href={`/products/${item.id}`}
+                  className="font-semibold text-lg sm:text-xl text-white hover:text-yellow-400 transition truncate"
+                >
+                  {item.name}
+                </Link>
+                <p className="text-yellow-400 font-bold text-lg whitespace-nowrap">
+                  {(item.salePrice ?? item.price).toLocaleString()}₫
+                </p>
+              </div>
+
+              {/* Quantity controls */}
+              <div className="mt-3 flex items-center gap-2 text-gray-300">
+                <span className="text-sm font-medium">Số lượng:</span>
+                <div className="flex items-center gap-2">
                   <Button
-                    size="sm"
+                    size="icon"
                     variant="outline"
                     onClick={() => handleDecrease(item.id, item.quantity)}
                     className="p-1"
                   >
-                    <Minus className="w-4 h-4 text-gray-300" />
+                    <Minus className="w-4 h-4" />
                   </Button>
-                  <span className="text-white font-semibold min-w-[24px] text-center">
-                    {item.quantity}
-                  </span>
+                  <span className="text-white font-semibold w-6 text-center">{item.quantity}</span>
                   <Button
-                    size="sm"
+                    size="icon"
                     variant="outline"
                     onClick={() => handleIncrease(item.id, item.quantity)}
                     className="p-1"
                   >
-                    <Plus className="w-4 h-4 text-gray-300" />
+                    <Plus className="w-4 h-4" />
                   </Button>
-                </span>
-              </p>
-              <p className="text-yellow-400 font-bold text-lg mt-3">
-                {(item.salePrice ?? item.price).toLocaleString()}₫
-              </p>
+                </div>
+              </div>
+
+              {/* Remove button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => removeFromCart(item.id)}
+                className="mt-4 flex items-center gap-2 text-sm text-red-400 hover:text-red-600"
+              >
+                <Trash2 className="w-4 h-4" />
+                Xóa
+              </Button>
             </div>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => removeFromCart(item.id)}
-              className="flex items-center gap-2 text-sm font-semibold hover:bg-red-600 focus:bg-red-600 transition-colors"
-            >
-              <Trash2 className="w-4 h-4" />
-              Xóa
-            </Button>
           </div>
         ))}
       </div>
 
-      {/* Footer tổng tiền + thanh toán */}
-      <div className="mt-12 flex flex-col md:flex-row justify-between items-center border-t border-gray-700 pt-6 gap-6">
-        <p className="text-2xl font-extrabold text-yellow-400 drop-shadow-lg">
+      {/* Total + Actions */}
+      <div className="mt-12 border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <p className="text-xl sm:text-2xl font-extrabold text-yellow-400">
           Tổng tiền: <span className="text-white">{totalPrice().toLocaleString()}₫</span>
         </p>
-        <div className="flex gap-6">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Button
             size="lg"
-            onClick={handleCheckoutRedirect}
-            className="uppercase tracking-wide font-bold shadow-lg bg-yellow-400 text-black hover:bg-yellow-500 focus:bg-yellow-500 active:scale-95 transition-transform"
+            onClick={handleCheckout}
+            className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold shadow transition"
           >
             Thanh toán
           </Button>
           <Button
-            variant="destructive"
             size="lg"
+            variant="destructive"
             onClick={clearCart}
-            className="uppercase tracking-wide font-bold shadow-lg bg-red-600 hover:bg-red-700 focus:bg-red-700 active:scale-95 transition-transform"
+            className="font-bold shadow hover:bg-red-700 transition"
           >
             Xóa tất cả
           </Button>

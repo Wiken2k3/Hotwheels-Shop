@@ -23,22 +23,22 @@ export default function SalePage() {
     arrows: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1280,
         settings: { slidesToShow: 3 },
       },
       {
-        breakpoint: 768,
+        breakpoint: 1024,
         settings: { slidesToShow: 2 },
       },
       {
-        breakpoint: 480,
+        breakpoint: 640,
         settings: { slidesToShow: 1 },
       },
     ],
   }
 
   return (
-    <main className="max-w-screen-xl mx-auto px-4 py-10">
+    <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-10">
       {/* Banner */}
       <div className="mb-10">
         <Image
@@ -52,18 +52,24 @@ export default function SalePage() {
       </div>
 
       {/* Tiêu đề chính */}
-      <h1 className="text-4xl font-extrabold text-red-600 tracking-tight mb-8">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-red-600 tracking-tight mb-8">
         🔥 Sản phẩm khuyến mãi
       </h1>
 
       {/* Danh sách sản phẩm giảm giá toàn bộ */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
-        {saleProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {saleProducts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
+          {saleProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-400 text-center italic mt-10">
+          Hiện chưa có sản phẩm giảm giá nào.
+        </p>
+      )}
 
-      {/* Carousel từng bộ sưu tập đang giảm giá */}
+      {/* Carousel từng bộ sưu tập */}
       {collections.length > 0 && (
         <section className="mt-10">
           <h2 className="text-2xl font-bold mb-6 text-orange-500">
@@ -75,19 +81,23 @@ export default function SalePage() {
               (p) => p.collection === collection
             )
 
+            if (items.length === 0) return null
+
             return (
               <div key={collection} className="mb-12">
                 <h3 className="text-xl font-semibold text-yellow-500 mb-3">
                   🚗 Bộ sưu tập: {collection}
                 </h3>
 
-                <Slider {...sliderSettings}>
-                  {items.map((product) => (
-                    <div key={product.id} className="px-2">
-                      <ProductCard product={product} />
-                    </div>
-                  ))}
-                </Slider>
+                <div className="-mx-2">
+                  <Slider {...sliderSettings}>
+                    {items.map((product) => (
+                      <div key={product.id} className="px-2">
+                        <ProductCard product={product} />
+                      </div>
+                    ))}
+                  </Slider>
+                </div>
               </div>
             )
           })}

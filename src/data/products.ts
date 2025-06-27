@@ -74,7 +74,7 @@ export const products: Product[] = [
     description: 'Màu tím quyến rũ với thân xe bóng loáng đậm chất retro. Purple Passion là biểu tượng của sự sang trọng và khác biệt.',
     collection: 'case-a-2025',
     onSale: true,
-    // liked: true,
+    liked: true,
   },
   {
     id: '23',

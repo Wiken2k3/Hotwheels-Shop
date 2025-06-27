@@ -1,5 +1,7 @@
 'use client'
 
+'use client'
+
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/store/auth-store'
 import { useCart } from '@/store/cart-store'
@@ -30,18 +32,16 @@ export default function ProfilePage() {
   const { orders, placeOrder } = useOrder()
   const router = useRouter()
 
-  const [wishlistItems, setWishlistItems] = useState<Product[] | null>(null) // null = loading
+  const [wishlistItems, setWishlistItems] = useState<Product[] | null>(null)
 
-  // Redirect nếu chưa đăng nhập
   useEffect(() => {
     if (!user) {
       router.push('/login')
     }
   }, [user, router])
 
-  // Lấy sản phẩm yêu thích từ localStorage, giả lập load async
   useEffect(() => {
-    setWishlistItems(null) // loading
+    setWishlistItems(null)
     const timer = setTimeout(() => {
       const ids = getWishlist()
       const items = products.filter((p) => ids.includes(p.id))
@@ -71,7 +71,6 @@ export default function ProfilePage() {
   const handleRemoveWishlist = (id: string) => {
     const newWishlist = wishlistItems?.filter((item) => item.id !== id) || []
     setWishlistItems(newWishlist)
-    // Cập nhật localStorage
     const currentIds = getWishlist()
     const updatedIds = currentIds.filter((pid) => pid !== id)
     setWishlist(updatedIds)
@@ -80,7 +79,6 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4 space-y-12">
-      {/* Thông tin người dùng */}
       <section className="text-center space-y-3">
         <h1 className="text-3xl font-bold text-yellow-400 tracking-wide">
           👋 Xin chào, <span className="text-white">{user.name}</span>!
@@ -98,7 +96,6 @@ export default function ProfilePage() {
         </Button>
       </section>
 
-      {/* Giỏ hàng */}
       <section className="bg-neutral-900 p-6 rounded-xl shadow space-y-4">
         <h2 className="text-2xl font-semibold text-yellow-400 mb-3">🛒 Giỏ hàng của bạn</h2>
         {cart.items.length === 0 ? (
@@ -114,39 +111,66 @@ export default function ProfilePage() {
               <motion.li
                 layout
                 key={item.id}
-                className="flex items-center gap-4 border-b border-gray-700 pb-4"
+                className="flex flex-col sm:flex-row sm:items-center gap-4 border-b border-gray-700 pb-4"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={64}
-                  height={40}
-                  className="rounded object-cover"
-                />
-                <Link
-                  href={`/products/${item.id}`}
-                  className="flex-1 font-medium text-white hover:underline"
-                >
-                  {item.name}
-                  <span className="block text-sm text-gray-400">
-                    {(item.salePrice ?? item.price).toLocaleString()}₫ x {item.quantity}
-                  </span>
-                </Link>
-                <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" onClick={() => cart.decreaseQuantity(item.id)}>-</Button>
-                  <span className="text-white min-w-[24px] text-center">{item.quantity}</span>
-                  <Button size="sm" variant="outline" onClick={() => cart.increaseQuantity(item.id)}>+</Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-red-400"
-                    onClick={() => cart.removeFromCart(item.id)}
+                <div className="flex items-center gap-4 w-full">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={64}
+                    height={40}
+                    className="rounded object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                  <Link
+                    href={`/products/${item.id}`}
+                    className="block font-medium text-white hover:underline"
                   >
-                    X
-                  </Button>
+                    {item.name}
+                  </Link>
+                  <p className="text-sm text-gray-400">
+                    {(item.salePrice ?? item.price).toLocaleString()}₫ x {item.quantity}
+                  </p>
+
+                  {/* Nút bấm: luôn xuống dòng trên màn nhỏ */}
+                  <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-1">
+                    <Button
+                      size="icon"
+                      className="w-9 h-9 text-lg"
+                      variant="outline"
+                      onClick={() => cart.decreaseQuantity(item.id)}
+                      aria-label="Giảm số lượng"
+                    >
+                      −
+                    </Button>
+                    <span className="text-white min-w-[32px] text-center text-base font-semibold">
+                      {item.quantity}
+                    </span>
+                    <Button
+                      size="icon"
+                      className="w-9 h-9 text-lg"
+                      variant="outline"
+                      onClick={() => cart.increaseQuantity(item.id)}
+                      aria-label="Tăng số lượng"
+                    >
+                      +
+                    </Button>
+                    <Button
+                      size="icon"
+                      className="w-9 h-9 text-red-500 border border-red-500"
+                      variant="ghost"
+                      onClick={() => cart.removeFromCart(item.id)}
+                      aria-label="Xoá khỏi giỏ"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                </div>
+
+
                 </div>
               </motion.li>
             ))}

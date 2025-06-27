@@ -37,9 +37,7 @@ export default function CheckoutPage() {
     watch,
   } = useForm<CheckoutForm>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      paymentMethod: 'cod',
-    },
+    defaultValues: { paymentMethod: 'cod' },
   })
 
   const onSubmit = (data: CheckoutForm) => {
@@ -48,75 +46,79 @@ export default function CheckoutPage() {
       return
     }
 
-    // Thực hiện tạo đơn hàng
     placeOrder(cart.items, cart.totalPrice())
     cart.clearCart()
 
-    toast.success('Đặt hàng thành công 🎉')
+    toast.success('🎉 Đặt hàng thành công!')
     router.push('/orders')
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-yellow-400 mb-6">🧾 Thanh toán</h1>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <h1 className="text-3xl sm:text-4xl font-bold text-yellow-400 mb-8 text-center">
+        🧾 Thông tin thanh toán
+      </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-neutral-900 p-6 rounded-xl shadow-lg">
-        {/* Tên */}
-        <div className="space-y-2">
-          <Label htmlFor="name">Tên người nhận</Label>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 bg-neutral-900 p-6 sm:p-8 rounded-2xl shadow-xl"
+      >
+        {/* Họ tên */}
+        <div>
+          <Label htmlFor="name" className="mb-1 block">Tên người nhận</Label>
           <Input id="name" {...register('name')} placeholder="Nguyễn Văn A" />
-          {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+          {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
         </div>
 
         {/* Email */}
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+        <div>
+          <Label htmlFor="email" className="mb-1 block">Email</Label>
           <Input id="email" {...register('email')} placeholder="abc@gmail.com" />
-          {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
         </div>
 
-        {/* Số điện thoại */}
-        <div className="space-y-2">
-          <Label htmlFor="phone">Số điện thoại</Label>
+        {/* Điện thoại */}
+        <div>
+          <Label htmlFor="phone" className="mb-1 block">Số điện thoại</Label>
           <Input id="phone" {...register('phone')} placeholder="0909xxxxxx" />
-          {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
+          {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
         </div>
 
         {/* Địa chỉ */}
-        <div className="space-y-2">
-          <Label htmlFor="address">Địa chỉ giao hàng</Label>
+        <div>
+          <Label htmlFor="address" className="mb-1 block">Địa chỉ giao hàng</Label>
           <Input id="address" {...register('address')} placeholder="123 Đường ABC, Quận 1" />
-          {errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
+          {errors.address && <p className="text-sm text-red-500 mt-1">{errors.address.message}</p>}
         </div>
 
-        {/* Phương thức thanh toán */}
-        <div className="space-y-2">
-          <Label>Phương thức thanh toán</Label>
+        {/* Thanh toán */}
+        <div>
+          <Label className="mb-2 block">Phương thức thanh toán</Label>
           <RadioGroup
             value={watch('paymentMethod')}
             onValueChange={(value) => setValue('paymentMethod', value as 'cod' | 'bank')}
-            className="space-y-2"
+            className="space-y-3"
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <RadioGroupItem value="cod" id="cod" />
               <Label htmlFor="cod">Thanh toán khi nhận hàng (COD)</Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <RadioGroupItem value="bank" id="bank" />
               <Label htmlFor="bank">Chuyển khoản ngân hàng</Label>
             </div>
           </RadioGroup>
-          {errors.paymentMethod && <p className="text-sm text-red-500">{errors.paymentMethod.message}</p>}
+          {errors.paymentMethod && <p className="text-sm text-red-500 mt-1">{errors.paymentMethod.message}</p>}
         </div>
 
         {/* Nút đặt hàng */}
-        <div className="text-right">
+        <div className="text-right pt-4">
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
+            className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold px-6 py-2 rounded-full shadow-lg"
           >
-            {isSubmitting ? 'Đang xử lý...' : 'Đặt hàng'}
+            {isSubmitting ? 'Đang xử lý...' : '🛒 Đặt hàng'}
           </Button>
         </div>
       </form>

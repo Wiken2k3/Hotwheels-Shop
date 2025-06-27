@@ -9,11 +9,25 @@ export default function OrdersPage() {
   const { orders, clearOrders } = useOrder()
   const router = useRouter()
 
+  const handleClearOrders = () => {
+    if (confirm('Bạn chắc chắn muốn xóa toàn bộ đơn hàng?')) {
+      clearOrders()
+    }
+  }
+
   if (orders.length === 0) {
     return (
       <div className="max-w-screen-md mx-auto py-32 text-center px-4">
         <h1 className="text-3xl font-bold text-yellow-400 mb-2">📭 Chưa có đơn hàng</h1>
-        <p className="text-gray-400">Hãy mua hàng để trải nghiệm Hot Wheels tuyệt vời nhé!</p>
+        <p className="text-gray-400">
+          Hãy mua hàng để trải nghiệm Hot Wheels tuyệt vời nhé!
+        </p>
+        <Button
+          className="mt-6 bg-yellow-400 text-black hover:bg-yellow-500 font-semibold"
+          onClick={() => router.push('/products')}
+        >
+          Mua sắm ngay
+        </Button>
       </div>
     )
   }
@@ -23,14 +37,7 @@ export default function OrdersPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-yellow-400">📦 Đơn hàng của bạn</h1>
-        <Button
-          variant="destructive"
-          onClick={() => {
-            if (confirm('Bạn chắc chắn muốn xóa toàn bộ đơn hàng?')) {
-              clearOrders()
-            }
-          }}
-        >
+        <Button variant="destructive" onClick={handleClearOrders}>
           Xóa tất cả
         </Button>
       </div>
@@ -40,11 +47,13 @@ export default function OrdersPage() {
         {orders.map((order) => (
           <div
             key={order.id}
-            className="p-6 rounded-lg bg-neutral-900 border border-gray-600 shadow hover:bg-neutral-800 cursor-pointer transition"
             onClick={() => router.push(`/orders/${order.id}`)}
+            className="p-6 rounded-lg bg-neutral-900 border border-gray-700 shadow-md hover:bg-neutral-800 transition cursor-pointer"
           >
             <div className="flex justify-between text-sm text-gray-400 mb-3">
-              <span>Mã đơn: <span className="text-white font-semibold">#{order.id}</span></span>
+              <span>
+                Mã đơn: <span className="text-white font-semibold">#{order.id}</span>
+              </span>
               <span>
                 Ngày đặt:{' '}
                 {new Date(order.createdAt).toLocaleString('vi-VN', {
@@ -57,7 +66,6 @@ export default function OrdersPage() {
               </span>
             </div>
 
-            {/* Sản phẩm đầu tiên + số lượng */}
             {order.items.length > 0 && (
               <div className="flex items-center gap-4">
                 <Image
@@ -67,18 +75,20 @@ export default function OrdersPage() {
                   height={50}
                   className="rounded object-cover"
                 />
-                <div className="flex-1">
-                  <p className="font-semibold text-white">{order.items[0].name}</p>
-                  <p className="text-sm text-gray-400">
-                    Số sản phẩm: {order.items.length} - Tổng tiền:{' '}
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-white truncate">
+                    {order.items[0].name}
+                  </p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Số sản phẩm: {order.items.length} — Tổng:{' '}
                     <span className="text-yellow-400 font-bold">
                       {order.total.toLocaleString()}₫
                     </span>
                   </p>
                 </div>
-                <div className="text-sm text-yellow-300 font-medium underline">
+                <span className="text-sm text-yellow-300 font-medium underline whitespace-nowrap">
                   Xem chi tiết →
-                </div>
+                </span>
               </div>
             )}
           </div>

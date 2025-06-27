@@ -24,13 +24,13 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   }
 
   return (
-    <div className="relative w-full max-w-xl mx-auto mb-10">
+    <div className="relative w-full max-w-xl mx-auto mb-8 px-4 sm:px-0">
       <div className="relative">
-        {/* Icon tìm kiếm */}
+        {/* Search icon */}
         <Search
           className={cn(
-            'absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 transition-all',
-            keyword && 'text-orange-500'
+            'absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-all',
+            keyword && 'text-yellow-500'
           )}
           aria-hidden
         />
@@ -41,17 +41,21 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           placeholder="Tìm kiếm xe Hot Wheels, chủ đề, bộ sưu tập..."
           value={keyword}
           onChange={handleChange}
-          className="pl-10 pr-10 py-2 text-sm border border-gray-300 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition duration-200 bg-white placeholder:text-gray-400"
+          className={cn(
+            'w-full pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base rounded-full bg-white text-gray-800 placeholder:text-gray-400',
+            'border border-gray-300 shadow focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400',
+            'transition duration-200'
+          )}
         />
 
-        {/* Icon xóa (hiện khi có chữ) */}
+        {/* Clear button */}
         {keyword && (
           <button
             onClick={clearInput}
             aria-label="Xoá từ khoá"
             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         )}
       </div>

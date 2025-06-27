@@ -19,30 +19,30 @@ export default function OrderDetailClient({ orderId }: Props) {
 
   useEffect(() => {
     if (!user) {
-      router.push('/login')
+      router.replace('/login')
     } else if (orderId && !order) {
-      router.push('/orders')
+      router.replace('/orders')
     }
   }, [user, order, orderId, router])
 
   if (!user) return null
   if (!order) {
     return (
-      <p className="text-center text-gray-400 mt-12">
-        Đang tải hoặc không tìm thấy đơn hàng...
+      <p className="text-center text-gray-400 mt-12 animate-pulse">
+        Đang tải đơn hàng hoặc không tìm thấy...
       </p>
     )
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-12 px-4 space-y-6">
+    <div className="max-w-3xl mx-auto py-12 px-4 space-y-8">
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-yellow-400 mb-2">🧾 Chi tiết đơn hàng</h1>
+      <div className="text-center space-y-1">
+        <h1 className="text-3xl font-bold text-yellow-400">🧾 Chi tiết đơn hàng</h1>
         <p className="text-gray-300">
           Mã đơn: <span className="text-white font-semibold">#{order.id}</span>
         </p>
-        <p className="text-gray-400 text-sm">
+        <p className="text-sm text-gray-400">
           Ngày đặt:{' '}
           {new Date(order.createdAt).toLocaleString('vi-VN', {
             day: '2-digit',
@@ -55,23 +55,23 @@ export default function OrderDetailClient({ orderId }: Props) {
       </div>
 
       {/* Danh sách sản phẩm */}
-      <div className="bg-neutral-900 p-6 rounded-xl shadow divide-y divide-gray-700">
+      <div className="bg-neutral-900 p-4 sm:p-6 rounded-xl shadow divide-y divide-gray-700">
         {order.items.map((item) => (
-          <div key={item.id} className="flex items-center gap-4 py-4">
+          <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
             <Image
               src={item.image}
               alt={item.name}
               width={80}
-              height={50}
-              className="rounded object-cover"
+              height={60}
+              className="rounded object-cover w-20 h-auto"
             />
             <div className="flex-1">
               <p className="font-medium text-white">{item.name}</p>
               <p className="text-sm text-gray-400">
-                Giá: {(item.salePrice ?? item.price).toLocaleString()}₫ x {item.quantity}
+                Giá: {(item.salePrice ?? item.price).toLocaleString()}₫ × {item.quantity}
               </p>
             </div>
-            <p className="font-bold text-yellow-400 whitespace-nowrap">
+            <p className="font-bold text-yellow-400 whitespace-nowrap self-end sm:self-auto">
               {(item.quantity * (item.salePrice ?? item.price)).toLocaleString()}₫
             </p>
           </div>
@@ -86,10 +86,10 @@ export default function OrderDetailClient({ orderId }: Props) {
       {/* Nút quay lại */}
       <div className="text-center">
         <button
-          className="mt-4 px-6 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 font-semibold shadow"
-          onClick={() => router.push('/profile')}
+          onClick={() => router.back()}
+          className="mt-4 px-6 py-3 bg-yellow-400 text-black rounded-full font-semibold shadow hover:bg-yellow-500 transition"
         >
-          ← Quay lại trang cá nhân
+          ← Quay lại
         </button>
       </div>
     </div>

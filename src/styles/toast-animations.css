@@ -1,4 +1,4 @@
-/* Slide in từ trên xuống + scale */
+/* Toast xuất hiện: trượt xuống nhẹ và phóng to dần */
 @keyframes slideIn {
   from {
     transform: translateY(-20px) scale(0.95);
@@ -10,7 +10,7 @@
   }
 }
 
-/* Fade out với scale nhỏ dần + delay */
+/* Toast biến mất: thu nhỏ lại và mờ dần */
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -22,13 +22,13 @@
   }
 }
 
-/* Toast vào */
+/* Hiệu ứng xuất hiện toast */
 .animate-slide-in {
   animation: slideIn 0.35s ease-out forwards;
 }
 
-/* Toast tự động biến mất sau delay */
+/* Hiệu ứng biến mất toast sau delay phù hợp với thời gian toastOptions.duration */
 .animate-fade-out {
   animation: fadeOut 0.3s ease-in forwards;
-  animation-delay: 2.7s; /* tương ứng với 3000ms duration ở react-hot-toast */
+  animation-delay: 2.7s; /* Delay = duration (3s) - fadeOut duration (0.3s) */
 }

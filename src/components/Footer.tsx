@@ -6,13 +6,15 @@ import { Facebook, Instagram, Youtube } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-t from-neutral-950 to-neutral-900 text-gray-300 pt-14 pb-8 border-t border-yellow-400/20 relative overflow-hidden">
+    <footer className="bg-gradient-to-t from-neutral-950 to-neutral-900 text-gray-300 pt-12 pb-6 border-t border-yellow-400/20 relative overflow-hidden">
+      {/* Hiệu ứng nền ánh sáng */}
       <div className="absolute inset-0 pointer-events-none opacity-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-yellow-400 via-transparent to-transparent" />
 
-      <div className="w-full max-w-screen-xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm relative z-10">
-        {/* Logo & Mô tả */}
-        <div className="text-center md:text-left">
-          <div className="w-20 h-20 mx-auto md:mx-0 rounded-full overflow-hidden border-2 border-yellow-400 shadow-yellow-500/30 shadow-md mb-3">
+      {/* Nội dung chính */}
+      <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 text-sm relative z-10">
+        {/* Logo & mô tả */}
+        <div className="text-center lg:text-left">
+          <div className="w-20 h-20 mx-auto lg:mx-0 rounded-full overflow-hidden border-2 border-yellow-400 shadow-yellow-500/30 shadow mb-3">
             <Image
               src="/images/logo.png"
               alt="Wiken Hotwheels"
@@ -21,7 +23,7 @@ export default function Footer() {
               className="object-cover"
             />
           </div>
-          <h2 className="text-xl font-bold text-yellow-400 tracking-wide">Wiken Hotwheels</h2>
+          <h2 className="text-lg font-bold text-yellow-400 tracking-wide">Wiken Hotwheels</h2>
           <p className="text-gray-400 mt-2 leading-relaxed text-sm">
             Mô hình Hot Wheels chính hãng – nơi bắt đầu cuộc đua và đam mê tốc độ.
           </p>
@@ -29,7 +31,7 @@ export default function Footer() {
 
         {/* Navigation */}
         <div>
-          <h4 className="text-white text-lg font-semibold mb-4">Điều hướng</h4>
+          <h4 className="text-white text-base font-semibold mb-4">Điều hướng</h4>
           <ul className="space-y-2">
             {[
               { name: 'Trang chủ', href: '/' },
@@ -48,7 +50,7 @@ export default function Footer() {
 
         {/* Support */}
         <div>
-          <h4 className="text-white text-lg font-semibold mb-4">Hỗ trợ</h4>
+          <h4 className="text-white text-base font-semibold mb-4">Hỗ trợ</h4>
           <ul className="space-y-2">
             <li><Link href="#" className="hover:text-yellow-400 transition">Chính sách đổi trả</Link></li>
             <li><Link href="#" className="hover:text-yellow-400 transition">Hướng dẫn mua hàng</Link></li>
@@ -59,7 +61,7 @@ export default function Footer() {
 
         {/* Contact & Social */}
         <div>
-          <h4 className="text-white text-lg font-semibold mb-4">Liên hệ</h4>
+          <h4 className="text-white text-base font-semibold mb-4">Liên hệ</h4>
           <ul className="space-y-1 text-gray-400 text-sm">
             <li>📍 292/16 GS14, Dĩ An, Bình Dương</li>
             <li>📞 0989 648 691</li>

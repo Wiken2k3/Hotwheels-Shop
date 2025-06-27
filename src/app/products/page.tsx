@@ -5,7 +5,7 @@ import { products } from '@/data/products'
 import { Product } from '@/types/product'
 import ProductCard from '@/components/ProductCard'
 import SearchBar from '@/components/SearchBar'
-import Filters from '@/components/Filters'
+// import Filters from '@/components/Filters'
 import Slider from 'react-slick'
 
 import 'slick-carousel/slick/slick.css'
@@ -13,21 +13,23 @@ import 'slick-carousel/slick/slick-theme.css'
 
 export default function Products() {
   const [allProducts, setAllProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [displayedProducts, setDisplayedProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
 
+  // Lấy danh sách ban đầu
   useEffect(() => {
     setAllProducts(products)
     setDisplayedProducts(products)
     setLoading(false)
   }, [])
 
-  // Lọc products theo searchKeyword riêng biệt (có thể mở rộng nếu muốn kết hợp với filters)
+  // Tìm kiếm theo keyword
   const filteredBySearch = displayedProducts.filter((p) =>
     p.name.toLowerCase().includes(searchKeyword.toLowerCase())
   )
 
+  // Tạo danh sách bộ sưu tập duy nhất
   const collections = Array.from(
     new Set(allProducts.map((p) => p.collection).filter(Boolean))
   )
@@ -47,7 +49,7 @@ export default function Products() {
 
   if (loading) {
     return (
-      <div className="text-center py-20 text-gray-500">
+      <div className="text-center py-20 text-gray-500 animate-pulse">
         Đang tải sản phẩm...
       </div>
     )
@@ -55,10 +57,10 @@ export default function Products() {
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8 lg:px-16 py-10 md:py-16">
-      {/* Search bar */}
+      {/* Thanh tìm kiếm */}
       <SearchBar onSearch={setSearchKeyword} />
 
-      {/* Filter component
+      {/* Bộ lọc (tuỳ chọn kích hoạt)
       <Filters
         onFilterChange={(filters) => {
           const filtered = products.filter((p) => {
@@ -73,32 +75,31 @@ export default function Products() {
         }}
       /> */}
 
-      {/* Slider bộ sưu tập chỉ hiện khi chưa lọc keyword, bộ lọc nào */}
-      {searchKeyword === '' && (
-        collections.map((collection) => {
-          const filtered = allProducts.filter((p) => p.collection === collection)
-          return (
-            <div key={collection} className="mb-16">
-              <h2 className="text-2xl font-bold mb-4 text-yellow-500">
-                🚗 Bộ sưu tập: {collection}
-              </h2>
-              <Slider {...sliderSettings}>
-                {filtered.map((product) => (
-                  <div key={product.id} className="px-2">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          )
-        })
-      )}
+      {/* Hiển thị theo bộ sưu tập nếu không có search */}
+      {searchKeyword === '' && collections.map((collection) => {
+        const filtered = allProducts.filter((p) => p.collection === collection)
+        return (
+          <div key={collection} className="mb-16">
+            <h2 className="text-2xl font-bold mb-4 text-yellow-500">
+              🚗 Bộ sưu tập: {collection}
+            </h2>
+            <Slider {...sliderSettings}>
+              {filtered.map((product) => (
+                <div key={product.id} className="px-2">
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </Slider>
+          </div>
+        )
+      })}
 
+      {/* Tiêu đề chung */}
       <h1 className="text-3xl sm:text-4xl font-bold text-center text-orange-500 mb-6">
         🏁 Tất cả sản phẩm Hot Wheels
       </h1>
 
-      {/* Danh sách sản phẩm đã lọc theo filter và search */}
+      {/* Lưới sản phẩm tìm kiếm */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
         {filteredBySearch.length > 0 ? (
           filteredBySearch.map((product) => (

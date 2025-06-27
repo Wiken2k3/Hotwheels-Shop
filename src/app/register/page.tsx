@@ -8,8 +8,9 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/store/auth-store'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
-// ✅ Thêm import API đăng ký
+// ✅ Import API đăng ký
 import { register as registerApi } from '@/lib/auth.service'
 
 const schema = z.object({
@@ -21,19 +22,27 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function RegisterPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
 
   const router = useRouter()
   const login = useAuth((state) => state.login)
+  const nameRef = useRef<HTMLInputElement>(null)
 
-  // ✅ Hàm submit đã được cập nhật
+  useEffect(() => {
+    nameRef.current?.focus()
+  }, [])
+
   const onSubmit = async (data: FormData) => {
     try {
       const res = await registerApi(data)
       localStorage.setItem('token', res.token)
-      login({ name: res.user.name, email: res.user.email }) // Zustand state
+      login({ name: res.user.name, email: res.user.email })
       toast.success('Đăng ký thành công!')
       router.push('/profile')
     } catch (err) {
@@ -42,46 +51,62 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-black rounded-xl shadow-md p-8">
-        <h1 className="text-2xl font-bold mb-2 text-center text-white">Đăng ký</h1>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-black">
+      <div className="w-full max-w-md bg-neutral-900 rounded-2xl shadow-2xl p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2">Đăng ký</h1>
         <p className="text-sm text-gray-400 text-center mb-6">Tạo tài khoản mới để tiếp tục</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name */}
           <div>
             <input
               {...register('name')}
+              ref={nameRef}
               placeholder="Họ và tên"
-              className="w-full border rounded px-4 py-2"
+              className="w-full rounded-xl px-4 py-3 bg-neutral-800 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
-            {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
           </div>
 
+          {/* Email */}
           <div>
             <input
               {...register('email')}
               placeholder="Email"
-              className="w-full border rounded px-4 py-2"
+              type="email"
+              autoComplete="email"
+              className="w-full rounded-xl px-4 py-3 bg-neutral-800 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
-            {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+            {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
           </div>
 
+          {/* Password */}
           <div>
             <input
               {...register('password')}
               type="password"
               placeholder="Mật khẩu"
-              className="w-full border rounded px-4 py-2"
+              autoComplete="new-password"
+              className="w-full rounded-xl px-4 py-3 bg-neutral-800 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
-            {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+            )}
           </div>
 
-          <Button className="w-full">Đăng ký</Button>
+          {/* Submit */}
+          <Button
+            type="submit"
+            className="w-full bg-yellow-400 text-black font-bold py-3 rounded-xl hover:bg-yellow-300 transition"
+          >
+            Đăng ký
+          </Button>
         </form>
 
-        <p className="text-sm text-center text-gray-300 mt-4">
+        {/* Đã có tài khoản */}
+        <p className="text-sm text-center text-gray-400 mt-6">
           Đã có tài khoản?{' '}
-          <Link href="/login" className="text-red-400 hover:underline">
+          <Link href="/login" className="text-yellow-400 hover:underline">
             Đăng nhập ngay
           </Link>
         </p>
