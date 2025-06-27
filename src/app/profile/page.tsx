@@ -68,7 +68,7 @@ export default function ProfilePage() {
     toast.success(`Đã thêm ${product.name} vào giỏ hàng!`)
   }
 
-  const handleRemoveWishlist = (id: number) => {
+  const handleRemoveWishlist = (id: string) => {
     const newWishlist = wishlistItems?.filter((item) => item.id !== id) || []
     setWishlistItems(newWishlist)
     // Cập nhật localStorage

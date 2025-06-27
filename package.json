@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rd /s /q .next && rd /s /q node_modules && del package-lock.json",
+    "rebuild": "npm run clean && npm install && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -43,6 +45,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
+    "@types/react-slick": "^0.23.13",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "tailwindcss": "^4",

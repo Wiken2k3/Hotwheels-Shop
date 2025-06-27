@@ -1,4 +1,4 @@
-// ProductDetailClient.tsx
+// src/app/products/[id]/ProductDetailClient.tsx
 'use client'
 
 import * as React from 'react'

@@ -9,7 +9,7 @@ import ToasterProvider from '@/components/ToasterProvider'
 
 const lora = Lora({
   subsets: ['latin'],
-  weight: ['400', '600', '700'], // bạn có thể tùy chỉnh
+  weight: ['400', '600', '700'],
   display: 'swap',
 })
 
@@ -25,12 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <head>
-        <meta
-          name="format-detection"
-          content="telephone=no, date=no, email=no, address=no"
-        />
-      </head>
       <body
         className={`${lora.className} bg-neutral-950 text-white min-h-screen flex flex-col`}
       >
