@@ -43,12 +43,12 @@ export default function ProductList() {
           Những mẫu Hot Wheels chất lượng, đa dạng – sẵn sàng cho bộ sưu tập của bạn.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 auto-rows-fr">
           {loading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="animate-pulse bg-neutral-800 rounded-xl aspect-[4/3]"
+                  className="animate-pulse bg-neutral-800 rounded-xl min-h-[340px] sm:min-h-[370px]"
                 />
               ))
             : products.map((product) => (

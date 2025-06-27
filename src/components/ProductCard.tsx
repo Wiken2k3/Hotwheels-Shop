@@ -42,11 +42,11 @@ export default function ProductCard({ product }: Props) {
   }
 
   return (
-    <div className="group relative rounded-xl overflow-hidden bg-white border border-yellow-100 shadow-sm hover:shadow-yellow-300 transition-all duration-300">
+    <div className="group relative flex flex-col rounded-xl overflow-hidden bg-white border border-yellow-100 shadow-sm hover:shadow-yellow-300 transition-all duration-300 min-h-[340px] sm:min-h-[370px]">
       {/* Image Section */}
       <Link
         href={`/products/${product.id}`}
-        className="block relative aspect-[4/3] overflow-hidden"
+        className="block relative w-full aspect-[4/3] overflow-hidden"
       >
         <Image
           src={product.image.trim()}
@@ -55,7 +55,7 @@ export default function ProductCard({ product }: Props) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10" />
 
         {/* Sale badge */}
         {isOnSale && (
@@ -81,15 +81,15 @@ export default function ProductCard({ product }: Props) {
       </Link>
 
       {/* Info Section */}
-      <div className="p-3 sm:p-4 space-y-2">
-        <Link href={`/products/${product.id}`}>
-          <h3 className="text-sm sm:text-base font-semibold text-gray-800 group-hover:text-yellow-600 transition line-clamp-1">
+      <div className="p-3 sm:p-4 flex flex-col flex-1">
+        <Link href={`/products/${product.id}`} className="mb-1">
+          <h3 className="text-sm sm:text-base font-semibold text-gray-800 group-hover:text-yellow-600 transition line-clamp-2 leading-snug">
             {product.name}
           </h3>
         </Link>
 
         {/* Pricing */}
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm mb-3">
           {isOnSale ? (
             <>
               <span className="text-red-600 font-bold">
@@ -106,12 +106,11 @@ export default function ProductCard({ product }: Props) {
           )}
         </div>
 
-        {/* Add to Cart */}
         <Button
           onClick={handleAddToCart}
           type="button"
           size="sm"
-          className="w-full flex items-center justify-center gap-1.5 sm:gap-2 bg-yellow-500 text-black font-medium hover:bg-yellow-600 transition hover:scale-105 shadow rounded-lg text-sm sm:text-base py-2 sm:py-2.5"
+          className="mt-auto w-full flex items-center justify-center gap-2 bg-yellow-500 text-black font-semibold hover:bg-yellow-600 transition hover:scale-105 text-sm sm:text-base py-2"
           aria-label={`Thêm ${product.name} vào giỏ hàng`}
         >
           <ShoppingCart className="w-4 h-4" />
