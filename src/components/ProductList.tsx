@@ -36,7 +36,7 @@ export default function ProductList() {
     <section className="relative py-16 sm:py-20 px-4 sm:px-6 md:px-10 lg:px-16 bg-black overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(253,224,71,0.08)_0%,transparent_70%)] opacity-30" />
       <div className="max-w-screen-xl mx-auto relative z-10">
-        <h2 className="text-m sm:text-1xl md:text-3.5xl font-extrabold text-center text-yellow-400 mb-6">
+        <h2 className="text-lg sm:text-xl md:text-3xl font-extrabold text-center text-yellow-400 mb-6">
           🚗 Sản phẩm thông thường
         </h2>
         <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto text-sm sm:text-base">
