@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
 
-const allCollections = ['Case A 2025', 'Case B 2025', 'Case C 2025', 'Case D 2025']
+const allCollections = ['case-a-2025', 'case-b-2025', 'case-c-2025', 'case-d-2025']
 
 export default function Filters({
   onFilterChange,
