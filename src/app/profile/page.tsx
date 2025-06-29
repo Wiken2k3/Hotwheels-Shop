@@ -199,28 +199,48 @@ export default function ProfilePage() {
             {orders.map((order) => (
               <motion.li
                 key={order.id}
-                onClick={() => router.push(`/orders/${order.id}`)}
-                className="flex items-center gap-4 border-b border-gray-700 pb-4 cursor-pointer hover:bg-neutral-800 p-2 rounded"
                 layout
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                className="flex items-center justify-between border-b border-gray-700 pb-4 hover:bg-neutral-800 p-2 rounded"
+                whileHover={{ scale: 1.02 }}
               >
-                {order.items[0] && (
-                  <Image
-                    src={order.items[0].image}
-                    alt={order.items[0].name}
-                    width={64}
-                    height={40}
-                    className="rounded object-cover"
-                  />
-                )}
-                <div className="flex-1">
-                  <p className="text-yellow-400 font-semibold">Mã đơn: #{order.id}</p>
-                  <p className="text-gray-400 text-sm">
-                    Ngày đặt: {new Date(order.createdAt).toLocaleDateString()}
-                  </p>
+                {/* Phần nhấn xem chi tiết */}
+                <div
+                  className="flex items-center gap-4 flex-1 cursor-pointer"
+                  onClick={() => router.push(`/orders/${order.id}`)}
+                >
+                  {order.items[0] && (
+                    <Image
+                      src={order.items[0].image}
+                      alt={order.items[0].name}
+                      width={64}
+                      height={40}
+                      className="rounded object-cover"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <p className="text-yellow-400 font-semibold">Mã đơn: #{order.id}</p>
+                    <p className="text-gray-400 text-sm">
+                      Ngày đặt: {new Date(order.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <p className="font-bold text-yellow-400">{order.total.toLocaleString()}₫</p>
                 </div>
-                <p className="font-bold text-yellow-400">{order.total.toLocaleString()}₫</p>
+
+                {/* Nút xoá đơn */}
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="text-red-400 ml-4"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (confirm(`Bạn chắc chắn muốn xoá đơn hàng #${order.id}?`)) {
+                      useOrder.getState().removeOrder(order.id)
+                      toast.success('Đã xoá đơn hàng thành công!')
+                    }
+                  }}
+                >
+                  ✕
+                </Button>
               </motion.li>
             ))}
           </motion.ul>

@@ -18,6 +18,7 @@ interface OrderState {
   orders: Order[]
   placeOrder: (items: OrderItem[], total: number) => void
   clearOrders: () => void
+  removeOrder: (id: string) => void
 }
 
 export const useOrder = create<OrderState>()(
@@ -36,6 +37,10 @@ export const useOrder = create<OrderState>()(
         }))
       },
       clearOrders: () => set({ orders: [] }),
+      removeOrder: (id) =>
+        set((state) => ({
+          orders: state.orders.filter((o) => o.id !== id),
+        })),
     }),
     {
       name: 'orders-storage',
